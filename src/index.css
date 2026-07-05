@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-dark-bg text-white antialiased;
+    background-image:
+      radial-gradient(ellipse at top, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    @apply bg-primary-500/30 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-bg;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-card rounded-full hover:bg-dark-cardHover;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .glass-card {
+    @apply bg-dark-card/50 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+
+  .glass-card-hover {
+    @apply glass-card hover:border-white/20 hover:bg-dark-card/70 transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-dark-card/50 border border-white/10 rounded-xl
+           text-white placeholder:text-gray-500
+           focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50
+           transition-all duration-200;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300
+           flex items-center justify-center gap-2 cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600
+           hover:from-primary-600 hover:to-primary-700
+           text-white shadow-glow-primary hover:shadow-glow
+           active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600
+           hover:from-secondary-600 hover:to-secondary-700
+           text-white shadow-glow-secondary;
+  }
+
+  .btn-outline {
+    @apply border border-white/20 hover:border-white/40 hover:bg-white/5
+           text-white bg-transparent;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-white/5 text-gray-400 hover:text-white;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400
+           hover:text-white hover:bg-white/5 transition-all duration-200 cursor-pointer;
+  }
+
+  .sidebar-item-active {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-white
+           bg-gradient-to-r from-primary-500/20 to-secondary-500/20
+           border-l-2 border-primary-500 cursor-pointer;
+  }
+
+  .stat-card {
+    @apply glass-card-hover p-6;
+  }
+
+  .chart-container {
+    @apply glass-card p-6;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-500/20 text-primary-400;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary-500/20 text-secondary-400;
+  }
+
+  .badge-success {
+    @apply bg-success-500/20 text-success-400;
+  }
+
+  .badge-warning {
+    @apply bg-warning-500/20 text-warning-400;
+  }
+
+  .badge-danger {
+    @apply bg-danger-500/20 text-danger-400;
+  }
+
+  .table-container {
+    @apply glass-card overflow-hidden;
+  }
+
+  .table {
+    @apply w-full;
+  }
+
+  .table th {
+    @apply px-6 py-4 text-left text-sm font-semibold text-gray-400 border-b border-white/10;
+  }
+
+  .table td {
+    @apply px-6 py-4 text-sm text-gray-300 border-b border-white/5;
+  }
+
+  .table tr:hover td {
+    @apply bg-white/5;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-secondary-400;
+  }
+
+  .animate-gradient-x {
+    animation: gradient 8s ease infinite;
+    background-size: 200% 200%;
+  }
+}

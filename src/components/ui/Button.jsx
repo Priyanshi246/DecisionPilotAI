@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/helpers';
 
 const Button = forwardRef(({
@@ -11,30 +12,66 @@ const Button = forwardRef(({
   className,
   ...props
 }, ref) => {
-  const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed';
+  const { darkMode } = useTheme();
+
+  const baseStyles = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 600,
+    borderRadius: '0.75rem',
+    transition: 'all 0.3s ease',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    opacity: disabled ? 0.5 : 1
+  };
 
   const variants = {
-    primary: 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-glow-primary',
-    secondary: 'bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white shadow-glow-secondary',
-    outline: 'border border-white/20 hover:border-white/40 hover:bg-white/5 text-white',
-    ghost: 'hover:bg-white/5 text-gray-400 hover:text-white',
-    danger: 'bg-gradient-to-r from-danger-500 to-danger-600 hover:from-danger-600 hover:to-danger-700 text-white',
-    success: 'bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-white'
+    primary: {
+      background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+      color: '#ffffff',
+      boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)'
+    },
+    secondary: {
+      background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+      color: '#ffffff',
+      boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4)'
+    },
+    outline: {
+      background: 'transparent',
+      color: darkMode ? '#ffffff' : '#0f172a',
+      border: darkMode ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.2)'
+    },
+    ghost: {
+      background: 'transparent',
+      color: darkMode ? '#94a3b8' : '#64748b'
+    },
+    danger: {
+      background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+      color: '#ffffff'
+    },
+    success: {
+      background: 'linear-gradient(135deg, #10b981, #059669)',
+      color: '#ffffff'
+    }
   };
 
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2.5 text-sm',
-    lg: 'px-6 py-3 text-base',
-    xl: 'px-8 py-4 text-lg'
+    sm: { padding: '0.375rem 0.75rem', fontSize: '0.875rem' },
+    md: { padding: '0.625rem 1rem', fontSize: '0.875rem' },
+    lg: { padding: '0.75rem 1.5rem', fontSize: '1rem' },
+    xl: { padding: '1rem 2rem', fontSize: '1.125rem' }
   };
+
+  const variantStyle = variants[variant] || variants.primary;
+  const sizeStyle = sizes[size] || sizes.md;
 
   return (
     <motion.button
       ref={ref}
       whileHover={{ scale: disabled ? 1 : 1.02 }}
       whileTap={{ scale: disabled ? 1 : 0.98 }}
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
+      className={cn('font-semibold', className)}
+      style={{ ...baseStyles, ...variantStyle, ...sizeStyle }}
       disabled={disabled || loading}
       {...props}
     >

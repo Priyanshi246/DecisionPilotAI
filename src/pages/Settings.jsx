@@ -6,8 +6,10 @@ import {
 } from 'react-icons/fi';
 import { Card, CardBody, CardHeader, Input, Button, Badge } from '../components/ui';
 import { useApp } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Settings() {
+  const { darkMode } = useTheme();
   const { settings, updateSettings } = useApp();
   const [geminiApiKey, setGeminiApiKey] = useState('');
   const [showApiKey, setShowApiKey] = useState(false);
@@ -44,16 +46,16 @@ export default function Settings() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Settings</h1>
-        <p className="text-gray-400 mt-1">Configure your application preferences</p>
+        <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Settings</h1>
+        <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Configure your application preferences</p>
       </div>
 
       <Card>
         <CardHeader className="flex items-center gap-3">
           <FiKey className="w-5 h-5 text-primary-400" />
           <div>
-            <h3 className="text-lg font-semibold text-white">AI Configuration</h3>
-            <p className="text-sm text-gray-400">Configure your Gemini API key for AI features</p>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>AI Configuration</h3>
+            <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Configure your Gemini API key for AI features</p>
           </div>
         </CardHeader>
         <CardBody className="space-y-4">
@@ -67,12 +69,13 @@ export default function Settings() {
             />
             <button
               onClick={() => setShowApiKey(!showApiKey)}
-              className="absolute right-3 top-9 text-gray-400 hover:text-white transition-colors"
+              style={{ color: darkMode ? '#9ca3af' : '#6b7280' }}
+              className="absolute right-3 top-9 hover:text-white transition-colors"
             >
               {showApiKey ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
             </button>
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
             Get your API key from{' '}
             <a
               href="https://makersuite.google.com/app/apikey"
@@ -95,15 +98,15 @@ export default function Settings() {
         <CardHeader className="flex items-center gap-3">
           <FiBell className="w-5 h-5 text-warning-400" />
           <div>
-            <h3 className="text-lg font-semibold text-white">Notifications</h3>
-            <p className="text-sm text-gray-400">Manage how you receive alerts</p>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Notifications</h3>
+            <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Manage how you receive alerts</p>
           </div>
         </CardHeader>
         <CardBody className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+          <div className="flex items-center justify-between p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
             <div>
-              <p className="font-medium text-white">Enable Notifications</p>
-              <p className="text-sm text-gray-400">Receive alerts for important events</p>
+              <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Enable Notifications</p>
+              <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Receive alerts for important events</p>
             </div>
             <button
               onClick={() => setNotificationsEnabled(!notificationsEnabled)}
@@ -121,15 +124,16 @@ export default function Settings() {
             { label: 'Report Notifications', description: 'When reports are ready', enabled: true },
             { label: 'Marketing Updates', description: 'Product news and updates', enabled: false }
           ].map((notif, index) => (
-            <div key={index} className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+            <div key={index} className="flex items-center justify-between p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
               <div>
-                <p className="font-medium text-white">{notif.label}</p>
-                <p className="text-sm text-gray-400">{notif.description}</p>
+                <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{notif.label}</p>
+                <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{notif.description}</p>
               </div>
               <input
                 type="checkbox"
                 checked={notif.enabled}
-                className="w-5 h-5 rounded border-white/20 bg-dark-card/50 text-primary-500 focus:ring-primary-500/50"
+                style={{ borderColor: darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)' }}
+                className="w-5 h-5 rounded text-primary-500 focus:ring-primary-500/50"
                 readOnly
               />
             </div>
@@ -141,8 +145,8 @@ export default function Settings() {
         <CardHeader className="flex items-center gap-3">
           <FiGlobe className="w-5 h-5 text-success-400" />
           <div>
-            <h3 className="text-lg font-semibold text-white">Language</h3>
-            <p className="text-sm text-gray-400">Select your preferred language</p>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Language</h3>
+            <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Select your preferred language</p>
           </div>
         </CardHeader>
         <CardBody>
@@ -151,14 +155,15 @@ export default function Settings() {
               <button
                 key={lang.code}
                 onClick={() => setLanguage(lang.code)}
-                className={`p-3 rounded-xl text-left transition-all ${
-                  language === lang.code
-                    ? 'bg-primary-500/20 border-2 border-primary-500'
-                    : 'bg-white/5 border-2 border-transparent hover:border-white/20'
-                }`}
+                style={{
+                  backgroundColor: language === lang.code ? 'rgba(59, 130, 246, 0.2)' : darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                  borderColor: language === lang.code ? 'rgb(59, 130, 246)' : darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
+                  borderWidth: '2px'
+                }}
+                className="p-3 rounded-xl text-left transition-all hover:border-opacity-50"
               >
-                <p className="font-medium text-white">{lang.label}</p>
-                <p className="text-xs text-gray-400">{lang.code.toUpperCase()}</p>
+                <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{lang.label}</p>
+                <p className="text-xs" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{lang.code.toUpperCase()}</p>
               </button>
             ))}
           </div>
@@ -169,8 +174,8 @@ export default function Settings() {
         <CardHeader className="flex items-center gap-3">
           <FiShield className="w-5 h-5 text-danger-400" />
           <div>
-            <h3 className="text-lg font-semibold text-white">Security</h3>
-            <p className="text-sm text-gray-400">Manage your account security</p>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Security</h3>
+            <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Manage your account security</p>
           </div>
         </CardHeader>
         <CardBody className="space-y-4">
@@ -180,7 +185,7 @@ export default function Settings() {
           <Button variant="outline" className="w-full">
             Enable Two-Factor Authentication
           </Button>
-          <button className="w-full p-3 text-danger-400 hover:bg-danger-500/10 rounded-xl transition-colors text-left">
+          <button className="w-full p-3 text-danger-400 hover:bg-danger-500/10 rounded-xl transition-colors text-left" style={{ color: '#f87171' }}>
             Delete Account
           </button>
         </CardBody>

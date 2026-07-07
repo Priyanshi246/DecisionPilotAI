@@ -5,6 +5,7 @@ import {
   FiClock, FiCheckCircle, FiTrash2
 } from 'react-icons/fi';
 import { Card, CardBody, CardHeader, Badge, Button } from '../components/ui';
+import { useTheme } from '../context/ThemeContext';
 
 const mockNotifications = [
   {
@@ -55,6 +56,7 @@ const mockNotifications = [
 ];
 
 export default function Notifications() {
+  const { darkMode } = useTheme();
   const [notifications, setNotifications] = useState(mockNotifications);
   const [filter, setFilter] = useState('all');
 
@@ -109,8 +111,8 @@ export default function Notifications() {
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Notifications</h1>
-          <p className="text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Notifications</h1>
+          <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
             {notifications.filter(n => !n.read).length} unread notifications
           </p>
         </div>
@@ -132,11 +134,13 @@ export default function Notifications() {
           <button
             key={tab.id}
             onClick={() => setFilter(tab.id)}
-            className={`px-4 py-2 text-sm rounded-full transition-all ${
-              filter === tab.id
-                ? 'bg-primary-500/20 text-primary-400 border-primary-500/30'
-                : 'bg-white/5 text-gray-400 hover:text-white'
-            } border border-white/10`}
+            style={{
+              backgroundColor: filter === tab.id ? 'rgba(59, 130, 246, 0.2)' : darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+              color: filter === tab.id ? '#60a5fa' : darkMode ? '#9ca3af' : '#6b7280',
+              borderColor: filter === tab.id ? 'rgba(59, 130, 246, 0.3)' : 'rgba(255, 255, 255, 0.1)',
+              borderWidth: '1px'
+            }}
+            className={`px-4 py-2 text-sm rounded-full transition-all ${filter === tab.id ? '' : 'hover:text-white'}`}
           >
             {tab.label}
           </button>
@@ -147,10 +151,10 @@ export default function Notifications() {
         {filteredNotifications.length === 0 ? (
           <Card className="text-center py-12">
             <CardBody>
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
-                <FiBell className="w-8 h-8 text-gray-600" />
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }}>
+                <FiBell className="w-8 h-8" style={{ color: darkMode ? '#4b5563' : '#cbd5e1' }} />
               </div>
-              <p className="text-gray-400">No notifications to display</p>
+              <p style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>No notifications to display</p>
             </CardBody>
           </Card>
         ) : (
@@ -163,7 +167,7 @@ export default function Notifications() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Card className={`relative ${!notification.read ? 'border-l-4 border-l-primary-500' : ''}`}>
+                <Card style={{ borderLeft: !notification.read ? '4px solid rgb(59, 130, 246)' : 'none' }} className="relative">
                   <CardBody className="p-4">
                     <div className="flex gap-4">
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getIconColor(notification.type)}`}>
@@ -173,15 +177,15 @@ export default function Notifications() {
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-white">{notification.title}</h3>
+                              <h3 className="font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{notification.title}</h3>
                               {!notification.read && (
                                 <span className="w-2 h-2 rounded-full bg-primary-500" />
                               )}
                             </div>
-                            <p className="text-sm text-gray-400">{notification.message}</p>
+                            <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{notification.message}</p>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <span className="text-xs text-gray-500 flex items-center gap-1">
+                            <span className="text-xs flex items-center gap-1" style={{ color: darkMode ? '#78716c' : '#a8a29e' }}>
                               <FiClock className="w-3 h-3" />
                               {formatTime(notification.timestamp)}
                             </span>

@@ -29,8 +29,8 @@ export default function Profile() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Profile</h1>
-        <p className="text-gray-400 mt-1">Manage your account settings</p>
+        <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Profile</h1>
+        <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Manage your account settings</p>
       </div>
 
       <Card>
@@ -41,12 +41,12 @@ export default function Profile() {
                 <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white text-4xl font-bold">
                   {name?.[0]?.toUpperCase() || 'U'}
                 </div>
-                <button className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-dark-card border border-white/10 flex items-center justify-center hover:bg-dark-cardHover transition-colors">
-                  <FiCamera className="w-5 h-5 text-gray-400" />
+                <button style={{ backgroundColor: darkMode ? 'rgb(30, 41, 59)' : 'rgb(248, 250, 252)', borderColor: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)' }} className="absolute bottom-0 right-0 w-10 h-10 rounded-full border flex items-center justify-center hover:bg-opacity-75 transition-colors">
+                  <FiCamera style={{ color: darkMode ? '#9ca3af' : '#6b7280' }} className="w-5 h-5" />
                 </button>
               </div>
-              <p className="mt-4 text-lg font-semibold text-white">{name || 'User'}</p>
-              <p className="text-sm text-gray-400">{email}</p>
+              <p className="mt-4 text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{name || 'User'}</p>
+              <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{email}</p>
             </div>
 
             <div className="flex-1 space-y-4">
@@ -83,16 +83,16 @@ export default function Profile() {
 
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold text-white">Preferences</h3>
-          <p className="text-sm text-gray-400">Customize your experience</p>
+          <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Preferences</h3>
+          <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Customize your experience</p>
         </CardHeader>
         <CardBody className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+          <div className="flex items-center justify-between p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
             <div className="flex items-center gap-3">
-              {darkMode ? <FiMoon className="w-5 h-5 text-gray-400" /> : <FiSun className="w-5 h-5 text-gray-400" />}
+              {darkMode ? <FiMoon className="w-5 h-5" style={{ color: '#9ca3af' }} /> : <FiSun className="w-5 h-5" style={{ color: '#9ca3af' }} />}
               <div>
-                <p className="font-medium text-white">Dark Mode</p>
-                <p className="text-sm text-gray-400">Toggle dark theme appearance</p>
+                <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Dark Mode</p>
+                <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Toggle dark theme appearance</p>
               </div>
             </div>
             <button
@@ -111,8 +111,8 @@ export default function Profile() {
 
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold text-white">Account Stats</h3>
-          <p className="text-sm text-gray-400">Your usage overview</p>
+          <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Account Stats</h3>
+          <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Your usage overview</p>
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -122,9 +122,9 @@ export default function Profile() {
               { label: 'Reports', value: '24' },
               { label: 'Days Active', value: '156' }
             ].map((stat) => (
-              <div key={stat.label} className="p-4 bg-white/5 rounded-xl text-center">
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
-                <p className="text-sm text-gray-400">{stat.label}</p>
+              <div key={stat.label} className="p-4 rounded-xl text-center" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
+                <p className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{stat.value}</p>
+                <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{stat.label}</p>
               </div>
             ))}
           </div>

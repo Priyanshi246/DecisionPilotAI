@@ -5,6 +5,7 @@ import {
   FiCheck, FiArrowRight, FiFilter, FiChevronDown
 } from 'react-icons/fi';
 import { Card, CardBody, CardHeader, Badge, Button, PillTabs } from '../components/ui';
+import { useTheme } from '../context/ThemeContext';
 
 const mockRecommendations = [
   {
@@ -75,6 +76,7 @@ const insights = {
 };
 
 export default function Recommendations() {
+  const { darkMode } = useTheme();
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
 
@@ -86,11 +88,11 @@ export default function Recommendations() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">AI Recommendations</h1>
-          <p className="text-gray-400 mt-1">Data-driven insights to improve your business</p>
+          <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>AI Recommendations</h1>
+          <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Data-driven insights to improve your business</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-400">Filter by:</span>
+          <span className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Filter by:</span>
           <PillTabs
             tabs={[
               { id: 'all', label: 'All' },
@@ -112,8 +114,8 @@ export default function Recommendations() {
                 <FiTarget className="w-5 h-5 text-success-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-white">Top Opportunity</h3>
-                <p className="text-sm text-gray-400">{insights.bestSegment.name} growing at {insights.bestSegment.growth}</p>
+                <h3 className="font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Top Opportunity</h3>
+                <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{insights.bestSegment.name} growing at {insights.bestSegment.growth}</p>
               </div>
             </div>
           </CardHeader>
@@ -124,13 +126,13 @@ export default function Recommendations() {
         <Card>
           <CardHeader className="flex items-center gap-3">
             <FiTrendingUp className="w-5 h-5 text-success-400" />
-            <h3 className="text-lg font-semibold text-white">Opportunities</h3>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Opportunities</h3>
           </CardHeader>
           <CardBody className="space-y-3">
             {insights.opportunities.map((opp, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-white/5">
+              <div key={index} className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
                 <div>
-                  <p className="font-medium text-white">{opp.title}</p>
+                  <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{opp.title}</p>
                   <p className="text-sm text-success-400">{opp.potential} potential</p>
                 </div>
                 <Badge variant="success">{opp.confidence}% confidence</Badge>
@@ -142,14 +144,14 @@ export default function Recommendations() {
         <Card>
           <CardHeader className="flex items-center gap-3">
             <FiAlertTriangle className="w-5 h-5 text-warning-400" />
-            <h3 className="text-lg font-semibold text-white">Risks</h3>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Risks</h3>
           </CardHeader>
           <CardBody className="space-y-3">
             {insights.risks.map((risk, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-white/5">
+              <div key={index} className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
                 <div>
-                  <p className="font-medium text-white">{risk.title}</p>
-                  <p className="text-sm text-gray-400">{risk.probability} probability</p>
+                  <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{risk.title}</p>
+                  <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{risk.probability} probability</p>
                 </div>
                 <Badge variant={risk.severity === 'High' ? 'danger' : risk.severity === 'Medium' ? 'warning' : 'neutral'}>
                   {risk.severity}
@@ -161,7 +163,7 @@ export default function Recommendations() {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-white">Detailed Recommendations</h2>
+        <h2 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Detailed Recommendations</h2>
         {filteredRecommendations.map((rec, index) => (
           <motion.div
             key={rec.id}
@@ -185,8 +187,8 @@ export default function Recommendations() {
                         </Badge>
                         <span className="text-sm text-gray-400">{rec.confidence}% confidence</span>
                       </div>
-                      <h3 className="text-lg font-semibold text-white mb-1">{rec.problem}</h3>
-                      <p className="text-sm text-gray-400">{rec.reason}</p>
+                      <h3 className="text-lg font-semibold mb-1" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{rec.problem}</h3>
+                      <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{rec.reason}</p>
                     </div>
                     <FiChevronDown
                       className={`w-5 h-5 text-gray-400 transition-transform ${
@@ -197,18 +199,18 @@ export default function Recommendations() {
                 </button>
 
                 {expandedId === rec.id && (
-                  <div className="px-6 pb-6 border-t border-white/10 pt-4">
+                  <div className="px-6 pb-6 pt-4" style={{ borderTop: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)' }}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs text-gray-500 uppercase mb-1">Suggested Action</p>
-                        <p className="text-white">{rec.suggestedAction}</p>
+                        <p className="text-xs uppercase mb-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Suggested Action</p>
+                        <p style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{rec.suggestedAction}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-500 uppercase mb-1">Expected Outcome</p>
-                        <p className="text-white">{rec.expectedOutcome}</p>
+                        <p className="text-xs uppercase mb-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Expected Outcome</p>
+                        <p style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{rec.expectedOutcome}</p>
                       </div>
                       <div className="md:col-span-2">
-                        <p className="text-xs text-gray-500 uppercase mb-1">Estimated Impact</p>
+                        <p className="text-xs uppercase mb-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Estimated Impact</p>
                         <p className="text-success-400 font-semibold">{rec.estimatedImpact}</p>
                       </div>
                     </div>

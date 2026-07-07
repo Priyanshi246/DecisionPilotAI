@@ -5,11 +5,13 @@ import {
   FiAlertCircle, FiTrendingUp, FiTarget, FiDollarSign
 } from 'react-icons/fi';
 import { Card, CardBody, Button, Badge } from '../components/ui';
+import { useTheme } from '../context/ThemeContext';
 import { analyzeData } from '../services/gemini';
 import { SAMPLE_QUESTIONS } from '../utils/constants';
 import { EXAMPLE_DATASET } from '../utils/constants';
 
 export default function Assistant() {
+  const { darkMode } = useTheme();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,8 +59,8 @@ export default function Assistant() {
   return (
     <div className="h-[calc(100vh-8rem)] flex flex-col">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">AI Assistant</h1>
-        <p className="text-gray-400 mt-1">Ask questions about your data and get AI-powered insights</p>
+        <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>AI Assistant</h1>
+        <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Ask questions about your data and get AI-powered insights</p>
       </div>
 
       <div className="flex-1 flex gap-6 min-h-0">
@@ -71,8 +73,8 @@ export default function Assistant() {
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center mb-6">
                       <FiCpu className="w-10 h-10 text-primary-400" />
                     </div>
-                    <h2 className="text-xl font-semibold text-white mb-2">Ask me anything about your data</h2>
-                    <p className="text-gray-400 max-w-md mb-6">
+                    <h2 className="text-xl font-semibold mb-2" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Ask me anything about your data</h2>
+                    <p className="max-w-md mb-6" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
                       I can analyze patterns, make predictions, and provide actionable recommendations.
                     </p>
                     <div className="flex flex-wrap justify-center gap-2">
@@ -80,7 +82,12 @@ export default function Assistant() {
                         <button
                           key={index}
                           onClick={() => handleQuestionClick(question)}
-                          className="px-4 py-2 text-sm text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl transition-all"
+                          className="px-4 py-2 text-sm rounded-xl transition-all"
+                          style={{
+                            color: darkMode ? '#d1d5db' : '#6b7280',
+                            backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)',
+                            border: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)'
+                          }}
                         >
                           {question}
                         </button>
@@ -112,23 +119,28 @@ export default function Assistant() {
                           )}
                         </div>
                         <div className={`flex-1 max-w-[80%] ${message.role === 'user' ? 'text-right' : ''}`}>
-                          <div className={`inline-block rounded-2xl px-4 py-3 ${
-                            message.role === 'user'
-                              ? 'bg-primary-500/20 border border-primary-500/30'
+                          <div className="inline-block rounded-2xl px-4 py-3" style={{
+                            backgroundColor: message.role === 'user'
+                              ? 'rgba(59, 130, 246, 0.2)'
                               : message.isError
-                                ? 'bg-danger-500/10 border border-danger-500/30'
-                                : 'bg-white/5 border border-white/10'
-                          }`}>
-                            <div className="text-sm text-gray-200 whitespace-pre-wrap">
+                                ? 'rgba(239, 68, 68, 0.1)'
+                                : (darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)'),
+                            border: message.role === 'user'
+                              ? '1px solid rgba(59, 130, 246, 0.3)'
+                              : message.isError
+                                ? '1px solid rgba(239, 68, 68, 0.3)'
+                                : (darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)')
+                          }}>
+                            <div className="text-sm whitespace-pre-wrap" style={{ color: darkMode ? '#d1d5db' : '#6b7280' }}>
                               {message.content}
                             </div>
                           </div>
                           {message.role === 'assistant' && !message.isError && (
                             <div className="flex items-center gap-2 mt-2">
-                              <button className="p-1 text-gray-500 hover:text-white transition-colors">
+                              <button className="p-1 transition-colors" style={{ color: darkMode ? '#6b7280' : '#9ca3af' }}>
                                 <FiCopy className="w-4 h-4" />
                               </button>
-                              <button className="p-1 text-gray-500 hover:text-success-400 transition-colors">
+                              <button className="p-1 transition-colors" style={{ color: darkMode ? '#6b7280' : '#9ca3af' }}>
                                 <FiThumbsUp className="w-4 h-4" />
                               </button>
                             </div>
@@ -141,11 +153,23 @@ export default function Assistant() {
                         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center">
                           <FiLoader className="w-4 h-4 text-primary-400 animate-spin" />
                         </div>
-                        <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3">
+                        <div className="rounded-2xl px-4 py-3" style={{
+                          backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)',
+                          border: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)'
+                        }}>
                           <div className="flex gap-1">
-                            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                            <span className="w-2 h-2 rounded-full animate-bounce" style={{
+                              backgroundColor: darkMode ? '#9ca3af' : '#6b7280',
+                              animationDelay: '0ms'
+                            }} />
+                            <span className="w-2 h-2 rounded-full animate-bounce" style={{
+                              backgroundColor: darkMode ? '#9ca3af' : '#6b7280',
+                              animationDelay: '150ms'
+                            }} />
+                            <span className="w-2 h-2 rounded-full animate-bounce" style={{
+                              backgroundColor: darkMode ? '#9ca3af' : '#6b7280',
+                              animationDelay: '300ms'
+                            }} />
                           </div>
                         </div>
                       </div>
@@ -155,7 +179,7 @@ export default function Assistant() {
                 )}
               </div>
 
-              <div className="p-4 border-t border-white/10">
+              <div className="p-4" style={{ borderTop: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)' }}>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -163,7 +187,12 @@ export default function Assistant() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                    className="flex-1 px-4 py-3 bg-dark-card/50 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+                    className="flex-1 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+                    style={{
+                      backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)',
+                      border: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
+                      color: darkMode ? '#ffffff' : '#0f172a'
+                    }}
                     disabled={loading}
                   />
                   <Button onClick={handleSend} loading={loading} disabled={!input.trim()}>
@@ -178,21 +207,25 @@ export default function Assistant() {
         <div className="hidden xl:block w-80">
           <Card className="sticky top-6">
             <CardBody>
-              <h3 className="font-semibold text-white mb-4">Quick Actions</h3>
+              <h3 className="font-semibold mb-4" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Quick Actions</h3>
               <div className="space-y-2">
                 {SAMPLE_QUESTIONS.map((question, index) => (
                   <button
                     key={index}
                     onClick={() => handleQuestionClick(question)}
-                    className="w-full text-left px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                    className="w-full text-left px-3 py-2 text-sm rounded-lg transition-all"
+                    style={{
+                      color: darkMode ? '#94a3b8' : '#64748b',
+                      backgroundColor: 'transparent'
+                    }}
                   >
                     {question}
                   </button>
                 ))}
               </div>
 
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <h3 className="font-semibold text-white mb-4">Analysis Types</h3>
+              <div className="mt-6 pt-6" style={{ borderTop: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)' }}>
+                <h3 className="font-semibold mb-4" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Analysis Types</h3>
                 <div className="space-y-2">
                   {[
                     { icon: FiTrendingUp, label: 'Trend Analysis', color: 'primary' },
@@ -201,7 +234,11 @@ export default function Assistant() {
                   ].map((item, index) => (
                     <button
                       key={index}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                      className="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-all"
+                      style={{
+                        color: darkMode ? '#94a3b8' : '#64748b',
+                        backgroundColor: 'transparent'
+                      }}
                     >
                       <item.icon className={`w-4 h-4 text-${item.color}-400`} />
                       {item.label}

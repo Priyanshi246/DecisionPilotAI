@@ -5,6 +5,7 @@ import {
   FiCheck, FiClock, FiFilter
 } from 'react-icons/fi';
 import { Card, CardBody, CardHeader, Badge, Button } from '../components/ui';
+import { useTheme } from '../context/ThemeContext';
 
 const reportTemplates = [
   { id: 1, name: 'Executive Summary', description: 'High-level business overview', icon: FiFileText },
@@ -22,6 +23,7 @@ const recentReports = [
 ];
 
 export default function Reports() {
+  const { darkMode } = useTheme();
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [generatedReport, setGeneratedReport] = useState(null);
@@ -41,8 +43,8 @@ export default function Reports() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Report Generator</h1>
-          <p className="text-gray-400 mt-1">Create professional reports from your data analysis</p>
+          <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Report Generator</h1>
+          <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Create professional reports from your data analysis</p>
         </div>
       </div>
 
@@ -50,27 +52,28 @@ export default function Reports() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <h3 className="text-lg font-semibold text-white">Report Templates</h3>
-              <p className="text-sm text-gray-400">Select a template to generate</p>
+              <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Report Templates</h3>
+              <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Select a template to generate</p>
             </CardHeader>
             <CardBody className="space-y-2">
               {reportTemplates.map((template) => (
                 <button
                   key={template.id}
                   onClick={() => setSelectedTemplate(template)}
-                  className={`w-full p-4 rounded-xl text-left transition-all ${
-                    selectedTemplate?.id === template.id
-                      ? 'bg-primary-500/20 border-2 border-primary-500'
-                      : 'bg-white/5 border-2 border-transparent hover:border-white/20'
-                  }`}
+                  className="w-full p-4 rounded-xl text-left transition-all border-2"
+                  style={{
+                    backgroundColor: selectedTemplate?.id === template.id ? 'rgba(59, 130, 246, 0.2)' : (darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)'),
+                    borderColor: selectedTemplate?.id === template.id ? 'rgb(59, 130, 246)' : 'transparent',
+                    borderWidth: selectedTemplate?.id === template.id ? '2px' : '2px'
+                  }}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
                       <template.icon className="w-5 h-5 text-primary-400" />
                     </div>
                     <div>
-                      <p className="font-medium text-white">{template.name}</p>
-                      <p className="text-xs text-gray-400">{template.description}</p>
+                      <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{template.name}</p>
+                      <p className="text-xs" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{template.description}</p>
                     </div>
                   </div>
                 </button>
@@ -94,8 +97,8 @@ export default function Reports() {
                 <div className="flex items-center gap-3">
                   <FiCheck className="w-5 h-5 text-success-400" />
                   <div>
-                    <h3 className="font-semibold text-white">{generatedReport.title}</h3>
-                    <p className="text-sm text-gray-400">Generated successfully</p>
+                    <h3 className="font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{generatedReport.title}</h3>
+                    <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Generated successfully</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -108,8 +111,11 @@ export default function Reports() {
                 </div>
               </CardHeader>
               <CardBody>
-                <div className="prose prose-invert max-w-none">
-                  <pre className="whitespace-pre-wrap bg-dark-card/50 p-6 rounded-xl text-sm text-gray-300 font-sans">
+                <div className="max-w-none">
+                  <pre className="whitespace-pre-wrap p-6 rounded-xl text-sm font-sans" style={{
+                    backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)',
+                    color: darkMode ? '#d1d5db' : '#6b7280'
+                  }}>
                     {generatedReport.content}
                   </pre>
                 </div>
@@ -118,30 +124,35 @@ export default function Reports() {
           ) : (
             <Card className="min-h-[400px] flex items-center justify-center">
               <CardBody className="text-center">
-                <div className="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                  <FiFileText className="w-10 h-10 text-gray-600" />
+                <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{
+                  backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)'
+                }}>
+                  <FiFileText className="w-10 h-10" style={{ color: darkMode ? '#4b5563' : '#d1d5db' }} />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-400 mb-2">No Report Generated</h3>
-                <p className="text-sm text-gray-500">Select a template and generate a report to see it here</p>
+                <h3 className="text-lg font-semibold mb-2" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>No Report Generated</h3>
+                <p className="text-sm" style={{ color: darkMode ? '#64748b' : '#9ca3af' }}>Select a template and generate a report to see it here</p>
               </CardBody>
             </Card>
           )}
 
           <Card>
             <CardHeader>
-              <h3 className="text-lg font-semibold text-white">Recent Reports</h3>
+              <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Recent Reports</h3>
             </CardHeader>
             <CardBody className="p-0">
-              <div className="divide-y divide-white/5">
+              <div style={{ borderBottom: darkMode ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid rgba(0, 0, 0, 0.08)' }}>
                 {recentReports.map((report) => (
-                  <div key={report.id} className="flex items-center justify-between p-4 hover:bg-white/5 transition-colors">
+                  <div key={report.id} className="flex items-center justify-between p-4 transition-colors" style={{
+                    backgroundColor: 'transparent',
+                    borderBottom: darkMode ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid rgba(0, 0, 0, 0.08)'
+                  }}>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
                         <FiFileText className="w-5 h-5 text-primary-400" />
                       </div>
                       <div>
-                        <p className="font-medium text-white">{report.name}</p>
-                        <p className="text-xs text-gray-400">{report.type} · {report.size} · {report.createdAt.toLocaleDateString()}</p>
+                        <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{report.name}</p>
+                        <p className="text-xs" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{report.type} · {report.size} · {report.createdAt.toLocaleDateString()}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">

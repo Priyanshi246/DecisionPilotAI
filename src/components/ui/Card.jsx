@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/helpers';
 
 export default function Card({
@@ -8,17 +9,27 @@ export default function Card({
   gradient = false,
   ...props
 }) {
+  const { darkMode } = useTheme();
   const Component = hover ? motion.div : 'div';
+
+  const baseStyle = {
+    backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    border: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
+    borderRadius: '1rem',
+    transition: 'all 0.3s ease'
+  };
 
   return (
     <Component
-      whileHover={hover ? { y: -4, scale: 1.02 } : undefined}
+      whileHover={hover ? { y: -4, scale: 1.01 } : undefined}
       className={cn(
-        'bg-dark-card/50 backdrop-blur-xl border border-white/10 rounded-2xl',
-        hover && 'hover:border-white/20 hover:bg-dark-card/70 transition-all duration-300 cursor-pointer',
-        gradient && 'bg-gradient-to-br from-dark-card/70 to-dark-card/30',
+        'rounded-2xl',
+        hover && 'cursor-pointer',
         className
       )}
+      style={baseStyle}
       {...props}
     >
       {children}
@@ -27,8 +38,15 @@ export default function Card({
 }
 
 export function CardHeader({ children, className }) {
+  const { darkMode } = useTheme();
+
   return (
-    <div className={cn('px-6 py-4 border-b border-white/10', className)}>
+    <div
+      className={cn('px-6 py-4', className)}
+      style={{
+        borderBottom: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)'
+      }}
+    >
       {children}
     </div>
   );
@@ -43,8 +61,15 @@ export function CardBody({ children, className }) {
 }
 
 export function CardFooter({ children, className }) {
+  const { darkMode } = useTheme();
+
   return (
-    <div className={cn('px-6 py-4 border-t border-white/10', className)}>
+    <div
+      className={cn('px-6 py-4', className)}
+      style={{
+        borderTop: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)'
+      }}
+    >
       {children}
     </div>
   );

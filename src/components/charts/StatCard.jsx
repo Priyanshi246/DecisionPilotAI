@@ -1,6 +1,14 @@
 import { motion } from 'framer-motion';
 import { FiTrendingUp, FiTrendingDown, FiMinus } from 'react-icons/fi';
-import { cn } from '../../utils/helpers';
+import { useTheme } from '../../context/ThemeContext';
+
+const colorStyles = {
+  primary: { gradient: 'rgba(37, 99, 235, 0.15)', border: 'rgba(37, 99, 235, 0.3)', iconBg: 'rgba(37, 99, 235, 0.15)', iconColor: '#2563eb' },
+  secondary: { gradient: 'rgba(124, 58, 237, 0.15)', border: 'rgba(124, 58, 237, 0.3)', iconBg: 'rgba(124, 58, 237, 0.15)', iconColor: '#7c3aed' },
+  success: { gradient: 'rgba(16, 185, 129, 0.15)', border: 'rgba(16, 185, 129, 0.3)', iconBg: 'rgba(16, 185, 129, 0.15)', iconColor: '#10b981' },
+  warning: { gradient: 'rgba(245, 158, 11, 0.15)', border: 'rgba(245, 158, 11, 0.3)', iconBg: 'rgba(245, 158, 11, 0.15)', iconColor: '#f59e0b' },
+  danger: { gradient: 'rgba(239, 68, 68, 0.15)', border: 'rgba(239, 68, 68, 0.3)', iconBg: 'rgba(239, 68, 68, 0.15)', iconColor: '#ef4444' }
+};
 
 export default function StatCard({
   title,
@@ -11,21 +19,8 @@ export default function StatCard({
   color = 'primary',
   delay = 0
 }) {
-  const colorClasses = {
-    primary: 'from-primary-500/20 to-primary-500/5 border-primary-500/20',
-    secondary: 'from-secondary-500/20 to-secondary-500/5 border-secondary-500/20',
-    success: 'from-success-500/20 to-success-500/5 border-success-500/20',
-    warning: 'from-warning-500/20 to-warning-500/5 border-warning-500/20',
-    danger: 'from-danger-500/20 to-danger-500/5 border-danger-500/20'
-  };
-
-  const iconColorClasses = {
-    primary: 'text-primary-400 bg-primary-500/20',
-    secondary: 'text-secondary-400 bg-secondary-500/20',
-    success: 'text-success-400 bg-success-500/20',
-    warning: 'text-warning-400 bg-warning-500/20',
-    danger: 'text-danger-400 bg-danger-500/20'
-  };
+  const { darkMode } = useTheme();
+  const style = colorStyles[color] || colorStyles.primary;
 
   const getTrendIcon = () => {
     if (!trend) return null;
@@ -37,10 +32,10 @@ export default function StatCard({
   const TrendIcon = getTrendIcon();
 
   const getTrendColor = () => {
-    if (!trend) return 'text-gray-400';
-    if (trend.direction === 'up') return 'text-success-400';
-    if (trend.direction === 'down') return 'text-danger-400';
-    return 'text-gray-400';
+    if (!trend) return darkMode ? '#94a3b8' : '#64748b';
+    if (trend.direction === 'up') return '#10b981';
+    if (trend.direction === 'down') return '#ef4444';
+    return darkMode ? '#94a3b8' : '#64748b';
   };
 
   return (
@@ -49,16 +44,19 @@ export default function StatCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -4 }}
-      className={cn(
-        'relative overflow-hidden rounded-2xl border p-6 bg-gradient-to-br backdrop-blur-xl transition-all duration-300',
-        colorClasses[color]
-      )}
+      className="relative overflow-hidden rounded-2xl p-6 backdrop-blur-xl transition-all duration-300"
+      style={{
+        background: `linear-gradient(135deg, ${style.gradient}, transparent)`,
+        border: `1px solid ${style.border}`,
+        backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)'
+      }}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-400">{title}</p>
+          <p className="text-sm font-medium" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{title}</p>
           <motion.p
-            className="text-3xl font-bold text-white mt-2"
+            className="text-3xl font-bold mt-2"
+            style={{ color: darkMode ? '#ffffff' : '#0f172a' }}
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: delay + 0.2, type: 'spring' }}
@@ -66,23 +64,24 @@ export default function StatCard({
             {value}
           </motion.p>
           {subtitle && (
-            <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+            <p className="text-sm mt-1" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>{subtitle}</p>
           )}
           {trend && (
-            <div className={cn('flex items-center gap-1 mt-2', getTrendColor())}>
+            <div className="flex items-center gap-1 mt-2" style={{ color: getTrendColor() }}>
               {TrendIcon && <TrendIcon className="w-4 h-4" />}
               <span className="text-sm font-medium">{trend.value}</span>
             </div>
           )}
         </div>
         {Icon && (
-          <div className={cn('p-3 rounded-xl', iconColorClasses[color])}>
-            <Icon className="w-6 h-6" />
+          <div
+            className="p-3 rounded-xl"
+            style={{ backgroundColor: style.iconBg }}
+          >
+            <Icon className="w-6 h-6" style={{ color: style.iconColor }} />
           </div>
         )}
       </div>
-
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-transparent to-current opacity-5" />
     </motion.div>
   );
 }

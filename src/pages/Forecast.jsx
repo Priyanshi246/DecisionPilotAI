@@ -6,6 +6,7 @@ import {
 } from 'react-icons/fi';
 import { LineChart, AreaChart, BarChart, StatCard } from '../components/charts';
 import { Card, CardBody, CardHeader, Badge, Button, Tabs } from '../components/ui';
+import { useTheme } from '../context/ThemeContext';
 
 const forecastTypes = [
   { id: 'revenue', label: 'Revenue', icon: FiDollarSign, color: 'primary' },
@@ -36,6 +37,7 @@ const forecastData = [
 ];
 
 export default function Forecast() {
+  const { darkMode } = useTheme();
   const [activeType, setActiveType] = useState('revenue');
   const [loading, setLoading] = useState(false);
 
@@ -56,8 +58,8 @@ export default function Forecast() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Forecast</h1>
-          <p className="text-gray-400 mt-1">AI-powered predictions for your business metrics</p>
+          <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Forecast</h1>
+          <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>AI-powered predictions for your business metrics</p>
         </div>
         <Button onClick={() => setLoading(true)}>
           <FiRefreshCw className="w-5 h-5" /> Refresh Forecasts
@@ -78,8 +80,8 @@ export default function Forecast() {
                 <type.icon className={`w-5 h-5 text-${type.color}-400`} />
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase">{type.label} Forecast</p>
-                <p className="text-lg font-semibold text-white">
+                <p className="text-xs uppercase" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{type.label} Forecast</p>
+                <p className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>
                   {type.id === 'revenue' && '$145K'}
                   {type.id === 'demand' && '2,340 units'}
                   {type.id === 'inventory' && '89% optimal'}
@@ -101,10 +103,10 @@ export default function Forecast() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>
                 {forecastTypes.find(t => t.id === activeType)?.label} Forecast
               </h3>
-              <p className="text-sm text-gray-400">6-month prediction with confidence intervals</p>
+              <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>6-month prediction with confidence intervals</p>
             </div>
             <Badge variant="success">High Accuracy</Badge>
           </div>
@@ -125,7 +127,7 @@ export default function Forecast() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-semibold text-white">Key Insights</h3>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Key Insights</h3>
           </CardHeader>
           <CardBody className="space-y-4">
             {[
@@ -133,14 +135,14 @@ export default function Forecast() {
               { title: 'Seasonal Peak', description: 'Q4 typically sees 35% higher demand', type: 'info' },
               { title: 'Risk Factor', description: 'Economic uncertainty may impact projections', type: 'warning' }
             ].map((insight, index) => (
-              <div key={index} className="flex items-start gap-3 p-3 rounded-xl bg-white/5">
+              <div key={index} className="flex items-start gap-3 p-3 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(30, 41, 59, 0.5)' : 'rgba(255, 255, 255, 0.9)' }}>
                 <div className={`w-2 h-2 rounded-full mt-2 ${
                   insight.type === 'success' ? 'bg-success-400' :
                   insight.type === 'warning' ? 'bg-warning-400' : 'bg-primary-400'
                 }`} />
                 <div>
-                  <p className="font-medium text-white">{insight.title}</p>
-                  <p className="text-sm text-gray-400 mt-1">{insight.description}</p>
+                  <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{insight.title}</p>
+                  <p className="text-sm mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{insight.description}</p>
                 </div>
               </div>
             ))}
@@ -149,7 +151,7 @@ export default function Forecast() {
 
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-semibold text-white">Forecast Confidence</h3>
+            <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Forecast Confidence</h3>
           </CardHeader>
           <CardBody>
             <BarChart
@@ -166,7 +168,7 @@ export default function Forecast() {
               height={200}
               bars={[{ dataKey: 'confidence', fill: '#2563EB' }]}
             />
-            <p className="text-center text-sm text-gray-400 mt-4">
+            <p className="text-center text-sm mt-4" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
               Confidence decreases further into the future
             </p>
           </CardBody>

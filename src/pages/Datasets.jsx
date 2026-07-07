@@ -8,6 +8,7 @@ import {
 import { Card, CardBody, CardHeader, Button, Badge, EmptyState } from '../components/ui';
 import { Table, SearchInput } from '../components/ui/Table';
 import { formatDateTime, getFileSize } from '../utils/helpers';
+import { useTheme } from '../context/ThemeContext';
 
 const mockDatasets = [
   { id: 1, name: 'Sales_Q4_2024.csv', rows: 12547, columns: 12, size: 2048000, uploadedAt: new Date('2024-01-15'), status: 'ready' },
@@ -17,6 +18,7 @@ const mockDatasets = [
 ];
 
 export default function Datasets() {
+  const { darkMode } = useTheme();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [datasets] = useState(mockDatasets);
@@ -36,8 +38,8 @@ export default function Datasets() {
             <FiFileText className="w-5 h-5 text-primary-400" />
           </div>
           <div>
-            <p className="font-medium text-white">{value}</p>
-            <p className="text-xs text-gray-500">{formatDateTime(row.uploadedAt)}</p>
+            <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{value}</p>
+            <p className="text-xs" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{formatDateTime(row.uploadedAt)}</p>
           </div>
         </div>
       )
@@ -46,19 +48,19 @@ export default function Datasets() {
       key: 'rows',
       label: 'Rows',
       sortable: true,
-      render: (value) => <span className="text-gray-300">{value.toLocaleString()}</span>
+      render: (value) => <span style={{ color: darkMode ? '#cbd5e1' : '#334155' }}>{value.toLocaleString()}</span>
     },
     {
       key: 'columns',
       label: 'Columns',
       sortable: true,
-      render: (value) => <span className="text-gray-300">{value}</span>
+      render: (value) => <span style={{ color: darkMode ? '#cbd5e1' : '#334155' }}>{value}</span>
     },
     {
       key: 'size',
       label: 'Size',
       sortable: true,
-      render: (value) => <span className="text-gray-300">{getFileSize(value)}</span>
+      render: (value) => <span style={{ color: darkMode ? '#cbd5e1' : '#334155' }}>{getFileSize(value)}</span>
     },
     {
       key: 'status',
@@ -95,8 +97,8 @@ export default function Datasets() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Datasets</h1>
-          <p className="text-gray-400 mt-1">Manage and explore your uploaded data</p>
+          <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Datasets</h1>
+          <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Manage and explore your uploaded data</p>
         </div>
         <Button onClick={() => navigate('/upload')}>
           Upload New
@@ -112,7 +114,12 @@ export default function Datasets() {
               placeholder="Search datasets..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-dark-card/50 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+              style={{
+                backgroundColor: darkMode ? 'rgba(15, 23, 42, 0.5)' : 'rgba(241, 245, 249, 0.9)',
+                border: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
+                color: darkMode ? '#ffffff' : '#0f172a'
+              }}
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
             />
           </div>
           <div className="flex items-center gap-2">

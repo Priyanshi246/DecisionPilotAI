@@ -9,6 +9,7 @@ import {
   FiTrendingUp, FiTarget, FiAlertTriangle, FiZap
 } from 'react-icons/fi';
 import { Card, CardBody, CardHeader, Badge, Button } from '../components/ui';
+import { useTheme } from '../context/ThemeContext';
 import { parseCSV, parseExcel, parseJSON, analyzeDataset, generateSummary } from '../services/dataParser';
 import { generateInsights, generateRecommendations } from '../services/gemini';
 import { supabase } from '../services/supabase';
@@ -16,6 +17,7 @@ import { getFileSize, getFileExtension, formatNumber } from '../utils/helpers';
 
 export default function Upload() {
   const navigate = useNavigate();
+  const { darkMode } = useTheme();
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -168,8 +170,8 @@ export default function Upload() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Upload Dataset</h1>
-        <p className="text-gray-400 mt-1">Upload your data files for AI-powered analysis</p>
+        <h1 className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Upload Dataset</h1>
+        <p className="mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Upload your data files for AI-powered analysis</p>
       </div>
 
       {/* Upload Area */}
@@ -179,9 +181,13 @@ export default function Upload() {
             {...getRootProps()}
             className={`
               relative p-12 text-center cursor-pointer transition-all duration-300
-              ${isDragActive ? 'bg-primary-500/10 border-primary-500' : 'border-white/10 hover:border-white/20'}
+              ${isDragActive ? 'bg-primary-500/10 border-primary-500' : ''}
               border-2 border-dashed rounded-2xl
             `}
+            style={{
+              borderColor: isDragActive ? undefined : (darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'),
+              backgroundColor: isDragActive ? 'rgba(59, 130, 246, 0.1)' : undefined
+            }}
           >
             <input {...getInputProps()} />
 
@@ -206,8 +212,8 @@ export default function Upload() {
                     <span className="text-lg font-bold text-primary-400">{analysisProgress}%</span>
                   </div>
                 </div>
-                <p className="text-lg font-medium text-white mb-1">{analysisStage}</p>
-                <p className="text-sm text-gray-400">{currentFile}</p>
+                <p className="text-lg font-medium mb-1" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{analysisStage}</p>
+                <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{currentFile}</p>
               </motion.div>
             ) : isDragActive ? (
               <motion.div
@@ -223,10 +229,10 @@ export default function Upload() {
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center mb-4">
                   <FiUploadCloud className="w-10 h-10 text-primary-400" />
                 </div>
-                <p className="text-lg font-medium text-white mb-2">
+                <p className="text-lg font-medium mb-2" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>
                   Drag and drop your files here
                 </p>
-                <p className="text-sm text-gray-400 mb-4">
+                <p className="text-sm mb-4" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
                   or click to browse from your computer
                 </p>
                 <div className="flex gap-3">
@@ -270,12 +276,12 @@ export default function Upload() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-white truncate">{file.name}</p>
+                      <p className="font-medium truncate" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{file.name}</p>
                       <Badge variant={file.status === 'complete' ? 'success' : file.status === 'processing' ? 'primary' : 'danger'} size="sm">
                         {file.status === 'processing' ? 'Analyzing...' : file.status === 'complete' ? 'Complete' : 'Error'}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
                       {getFileSize(file.size)}
                       {file.rows !== undefined && ` · ${formatNumber(file.rows)} rows · ${file.columns} columns`}
                     </p>
@@ -283,7 +289,11 @@ export default function Upload() {
 
                   <button
                     onClick={() => removeFile(file.id)}
-                    className="p-2 text-gray-400 hover:text-danger-400 hover:bg-danger-500/10 rounded-lg transition-all"
+                    className="p-2 rounded-lg transition-all"
+                    style={{
+                      color: darkMode ? '#94a3b8' : '#64748b',
+                      backgroundColor: 'transparent'
+                    }}
                   >
                     <FiX className="w-5 h-5" />
                   </button>
@@ -291,7 +301,10 @@ export default function Upload() {
 
                 {/* Error message */}
                 {file.status === 'error' && file.error && (
-                  <div className="mt-4 p-3 bg-danger-500/10 border border-danger-500/30 rounded-xl">
+                  <div className="mt-4 p-3 rounded-xl" style={{
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)'
+                  }}>
                     <p className="text-sm text-danger-400">{file.error}</p>
                   </div>
                 )}
@@ -307,44 +320,44 @@ export default function Upload() {
                     <div className="flex items-center gap-3">
                       <FiDatabase className="w-5 h-5 text-primary-400" />
                       <div>
-                        <h3 className="text-lg font-semibold text-white">Dataset Overview</h3>
-                        <p className="text-sm text-gray-400">Structure and quality analysis</p>
+                        <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Dataset Overview</h3>
+                        <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Structure and quality analysis</p>
                       </div>
                     </div>
                   </CardHeader>
                   <CardBody>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      <div className="p-4 bg-white/5 rounded-xl">
-                        <p className="text-xs text-gray-500 uppercase">Total Rows</p>
-                        <p className="text-2xl font-bold text-white">{formatNumber(file.stats.totalRows)}</p>
+                      <div className="p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)' }}>
+                        <p className="text-xs uppercase" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>Total Rows</p>
+                        <p className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{formatNumber(file.stats.totalRows)}</p>
                       </div>
-                      <div className="p-4 bg-white/5 rounded-xl">
-                        <p className="text-xs text-gray-500 uppercase">Columns</p>
-                        <p className="text-2xl font-bold text-white">{file.stats.totalColumns}</p>
+                      <div className="p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)' }}>
+                        <p className="text-xs uppercase" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>Columns</p>
+                        <p className="text-2xl font-bold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{file.stats.totalColumns}</p>
                       </div>
-                      <div className="p-4 bg-white/5 rounded-xl">
-                        <p className="text-xs text-gray-500 uppercase">Missing Values</p>
+                      <div className="p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)' }}>
+                        <p className="text-xs uppercase" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>Missing Values</p>
                         <p className="text-2xl font-bold text-warning-400">{file.stats.missingValues}</p>
                       </div>
-                      <div className="p-4 bg-white/5 rounded-xl">
-                        <p className="text-xs text-gray-500 uppercase">Duplicates</p>
+                      <div className="p-4 rounded-xl" style={{ backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)' }}>
+                        <p className="text-xs uppercase" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>Duplicates</p>
                         <p className="text-2xl font-bold text-warning-400">{file.stats.duplicateRows}</p>
                       </div>
                     </div>
 
                     {/* Column breakdown */}
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-400 mb-3">Column Analysis</h4>
+                      <h4 className="text-sm font-medium mb-3" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Column Analysis</h4>
                       <div className="max-h-48 overflow-y-auto space-y-2">
                         {Object.entries(file.stats.columns).slice(0, 10).map(([name, col]) => (
-                          <div key={name} className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                          <div key={name} className="flex items-center justify-between p-2 rounded-lg" style={{ backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)' }}>
                             <div className="flex items-center gap-2">
-                              <span className="text-sm text-white">{name}</span>
+                              <span className="text-sm" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{name}</span>
                               <Badge variant={col.type === 'numeric' ? 'primary' : col.type === 'date' ? 'success' : 'neutral'} size="sm">
                                 {col.type}
                               </Badge>
                             </div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
                               {col.missing > 0 && <span className="text-warning-400">{col.missing} missing</span>}
                               {col.missing === 0 && <span className="text-success-400">Complete</span>}
                             </div>
@@ -362,15 +375,19 @@ export default function Upload() {
                       <div className="flex items-center gap-3">
                         <FiZap className="w-5 h-5 text-warning-400" />
                         <div>
-                          <h3 className="text-lg font-semibold text-white">AI-Generated Insights</h3>
-                          <p className="text-sm text-gray-400">Analysis powered by Google Gemini</p>
+                          <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>AI-Generated Insights</h3>
+                          <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>Analysis powered by Google Gemini</p>
                         </div>
                       </div>
                     </CardHeader>
                     <CardBody>
                       {file.aiInsights.summary && (
-                        <div className="p-4 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 border border-primary-500/20 rounded-xl mb-6">
-                          <p className="text-sm text-gray-300">{file.aiInsights.summary}</p>
+                        <div className="p-4 rounded-xl mb-6" style={{
+                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                          border: '1px solid rgba(59, 130, 246, 0.2)',
+                          color: darkMode ? '#d1d5db' : '#6b7280'
+                        }}>
+                          <p className="text-sm">{file.aiInsights.summary}</p>
                         </div>
                       )}
 
@@ -383,8 +400,11 @@ export default function Upload() {
                               <h4 className="font-medium">Top Opportunities</h4>
                             </div>
                             {file.aiInsights.opportunities.slice(0, 3).map((opp, i) => (
-                              <div key={i} className="p-3 bg-success-500/10 border border-success-500/20 rounded-lg">
-                                <p className="text-sm text-white">{typeof opp === 'string' ? opp : opp.title || opp}</p>
+                              <div key={i} className="p-3 rounded-lg" style={{
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                border: '1px solid rgba(34, 197, 94, 0.2)'
+                              }}>
+                                <p className="text-sm" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{typeof opp === 'string' ? opp : opp.title || opp}</p>
                               </div>
                             ))}
                           </div>
@@ -398,8 +418,11 @@ export default function Upload() {
                               <h4 className="font-medium">Potential Risks</h4>
                             </div>
                             {file.aiInsights.risks.slice(0, 3).map((risk, i) => (
-                              <div key={i} className="p-3 bg-danger-500/10 border border-danger-500/20 rounded-lg">
-                                <p className="text-sm text-white">{typeof risk === 'string' ? risk : risk.title || risk}</p>
+                              <div key={i} className="p-3 rounded-lg" style={{
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid rgba(239, 68, 68, 0.2)'
+                              }}>
+                                <p className="text-sm" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>{typeof risk === 'string' ? risk : risk.title || risk}</p>
                               </div>
                             ))}
                           </div>
@@ -409,9 +432,12 @@ export default function Upload() {
                       {/* Best/Worst Segments */}
                       <div className="grid grid-cols-2 gap-4 mt-6">
                         {file.aiInsights.bestSegment && (
-                          <div className="p-4 bg-success-500/10 border border-success-500/20 rounded-xl">
-                            <p className="text-xs text-gray-500 uppercase mb-1">Best Performing</p>
-                            <p className="text-lg font-semibold text-white">
+                          <div className="p-4 rounded-xl" style={{
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            border: '1px solid rgba(34, 197, 94, 0.2)'
+                          }}>
+                            <p className="text-xs uppercase mb-1" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>Best Performing</p>
+                            <p className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>
                               {typeof file.aiInsights.bestSegment === 'object'
                                 ? file.aiInsights.bestSegment.name || JSON.stringify(file.aiInsights.bestSegment)
                                 : file.aiInsights.bestSegment}
@@ -419,9 +445,12 @@ export default function Upload() {
                           </div>
                         )}
                         {file.aiInsights.worstSegment && (
-                          <div className="p-4 bg-danger-500/10 border border-danger-500/20 rounded-xl">
-                            <p className="text-xs text-gray-500 uppercase mb-1">Needs Attention</p>
-                            <p className="text-lg font-semibold text-white">
+                          <div className="p-4 rounded-xl" style={{
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.2)'
+                          }}>
+                            <p className="text-xs uppercase mb-1" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>Needs Attention</p>
+                            <p className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>
                               {typeof file.aiInsights.worstSegment === 'object'
                                 ? file.aiInsights.worstSegment.name || JSON.stringify(file.aiInsights.worstSegment)
                                 : file.aiInsights.worstSegment}
@@ -440,14 +469,17 @@ export default function Upload() {
                       <div className="flex items-center gap-3">
                         <FiTarget className="w-5 h-5 text-secondary-400" />
                         <div>
-                          <h3 className="text-lg font-semibold text-white">Recommended Actions</h3>
-                          <p className="text-sm text-gray-400">AI-suggested next steps</p>
+                          <h3 className="text-lg font-semibold" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>Recommended Actions</h3>
+                          <p className="text-sm" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>AI-suggested next steps</p>
                         </div>
                       </div>
                     </CardHeader>
                     <CardBody className="space-y-3">
                       {file.aiRecommendations.slice(0, 5).map((rec, i) => (
-                        <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                        <div key={i} className="p-4 rounded-xl" style={{
+                          backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)',
+                          border: darkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)'
+                        }}>
                           <div className="flex items-start gap-3">
                             <Badge variant={
                               rec.priority?.toLowerCase() === 'high' ? 'danger' :
@@ -456,11 +488,11 @@ export default function Upload() {
                               {rec.priority || 'Medium'}
                             </Badge>
                             <div className="flex-1">
-                              <p className="font-medium text-white">
+                              <p className="font-medium" style={{ color: darkMode ? '#ffffff' : '#0f172a' }}>
                                 {rec.problem || rec.title || (typeof rec === 'string' ? rec : JSON.stringify(rec))}
                               </p>
                               {rec.suggestedAction && (
-                                <p className="text-sm text-gray-400 mt-1">{rec.suggestedAction}</p>
+                                <p className="text-sm mt-1" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>{rec.suggestedAction}</p>
                               )}
                               {rec.expectedOutcome && (
                                 <p className="text-sm text-success-400 mt-2">
